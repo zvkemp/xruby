@@ -7,7 +7,7 @@ class Element
   end
 
   def self.each_datum(elem)
-    until elem.nil?
+    until elem.nil? || elem.null?
       yield elem.datum
       elem = elem.next
     end
@@ -20,7 +20,7 @@ class Element
   end
 
   def self.reverse(elem)
-    res = nil
+    res = NullElement.new
     each_datum(elem) { |datum| res = new(datum, res) }
     res
   end
@@ -31,7 +31,7 @@ class Element
   end
 
   def to_s
-    "<#{self.class.name} @datum=#{@datum} @next=#{@next || 'nil'}>"
+    "<#{self.class.name} @datum=#{@datum} @next=#{@next || 'NULL'}>"
   end
 
   def to_a
@@ -40,6 +40,10 @@ class Element
 
   def reverse
     self.class.reverse(self)
+  end
+
+  def null?
+    false
   end
 end
 
@@ -60,7 +64,7 @@ class NullElement
     nil
   end
 
-  def nil?
+  def null?
     true
   end
 end
